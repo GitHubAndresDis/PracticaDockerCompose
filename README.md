@@ -1,15 +1,15 @@
 # Practica Docker Compose
 Practica de docker-compose - Clase Informatica II - Especialziación en Ingenieria del Software - Universidad Distrital
 
-Integrantes:
+# Integrantes:
 VERGARA RODRÍGUEZ DAINER ANDRÉS cod: 20202099037
 CORDOBA AGUILAR RHOSBEN ADHIER cod: 20202099025
 CASTRO ESCORCIA EDGAR JUNIOR cod: 20202099024
 
 
-Una aplicación web de Php simple que se conecta a apache para almacenar usuarios (crud) y el cual cuenta con una base de datos mysql.
+# Una aplicación web de Php simple que se conecta a apache para almacenar usuarios (crud) y el cual cuenta con una base de datos mysql.
 
-Aquí está el docker-compose.yml que impulsa toda la configuración.
+# Aquí está el docker-compose.yml que impulsa toda la configuración.
 
 version: '3'
 
@@ -37,7 +37,7 @@ services:
       - mysql
 
 
-Configuración
+# Configuración
 
 Iniciamos creando una imagen de mysql el cual crea la base de datos y configura el servicio
 
@@ -52,7 +52,7 @@ cd /usr/local/bin
 docker tag php-apache:latest edgar180251/php:7.3-apache2
 docker push edgar180251:php:7.3
 
-dockerfile:
+# dockerfile:
 
 FROM edgar180251:7.3-apache
 RUN cd /usr/local/bin && ./docker-php-ext-install pdo_mysql && ./docker-php-ext-install mysqli
