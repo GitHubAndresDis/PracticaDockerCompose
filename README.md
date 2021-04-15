@@ -1,2 +1,2 @@
-# PracticaDockerCompuse
-Practica de docker-compose - clase Informatica II - Universidad Distrital
+# Practica Docker Compuse
+Practica de docker-compose - Clase Informatica II - Especialziación en Ingenieria del Software - Universidad Distrital
