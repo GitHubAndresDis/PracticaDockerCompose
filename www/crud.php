@@ -33,7 +33,7 @@
 
       if(($query_select->num_rows) == 0) {
         // Inserta los datos correspondientes
-        $sql_insert = "INSERT INTO usuarios(id, nombre, telefono, email, direccion) VALUES('$nombre', '$telefono', '$email', '$direccion')";
+        $sql_insert = "INSERT INTO usuarios(nombre, telefono, email, direccion) VALUES('$nombre', '$telefono', '$email', '$direccion')";
        $sql = $mysqli->query($sql_insert);
         if($mysqli->query($sql_insert) === TRUE) {
           echo "Guardado exitoso.";
