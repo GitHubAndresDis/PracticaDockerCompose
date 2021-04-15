@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CRUD-3-CAPAS</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div id="app" align="center" width="200">
+
+        <div class="form-group">
+            <h3>Usuarios</h3>
+            <table border="0" :items="usuarios">
+                <thead align="center">
+                    <th>id</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Dirección</th>
+                </thead>
+                <tbody>
+
+                    <tr v-for="(usuario, index) in usuarios">
+                        <td> {{ index +1}} </td>
+                        <td> {{ usuario.nombre }} </td>
+                        <td> {{ usuario.telefono }} </td>
+                        <td> {{ usuario.email }} </td>
+                        <td> {{ usuario.direccion }} </td>
+
+                        <td> <button class="btn btn-primary float-right" value="editar" @click="editUsuario(index, usuario.id)"> EDITAR </button> </td>
+                        <td> <button class="btn btn-danger float-right" value="eliminar" @click="deleteUsuario(index, usuario.id)"> ELIMINAR </button> </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <div class="card" style="width: 18rem;"></div>
+        <h4>Formulario de usuario</h4>
+        <label>Nombre: <input type="text" v-model='nombre' class="form-control"></label>
+        <label>Telefono: <input type="number" v-model='telefono' class="form-control"></label>
+        <label>Email: <input type="text" v-model='email' class="form-control"></label>
+        <label>Dirección: <input type="text" v-model='direccion' class="form-control"></label>
+
+        <button value="agregar" class="btn btn-success" @click=" addUsuario(); ">Guardar</button>
+    </div>
+    </div>
+
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                usuarios: [],
+                nombre: '',
+                telefono: '',
+                email: '',
+                direccion: ''
+            },
+            methods: {
+                obtenerUsuarios: function() {
+                    axios.post('/crud.php', {
+                            request: 1
+                        })
+                        .then(function(response) {
+                            app.usuarios = response.data;
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                },
+
+                addUsuario: function() {
+                    if (this.nombre != '' && this.telefono != '' && this.email != '' && this.direccion != '') {
+                        axios.post('/crud.php', {
+                                request: 2,
+                                nombre: this.nombre,
+                                telefono: this.telefono,
+                                email: this.email,
+                                direccion: this.direccion
+                            })
+                            .then(function(response) {
+                                app.obtenerUsuarios();
+                                app.nombre = '';
+                                app.telefono = '';
+                                app.email = '';
+                                app.direccion = '';
+
+                                alert(response.data);
+                            })
+                            .catch(function() {
+                                console.log(error);
+                            });
+                    } else {
+                        alert("Diligencie todos los campos ");
+                    }
+                },
+
+                editUsuario: function(index, id) {
+                    var nombre = this.nombre;
+                    var telefono = this.telefono;
+                    var email = this.email;
+                    var direccion = this.direccion;
+
+                    if (nombre != '' && telefono != '') {
+                        axios.post('/crud.php', {
+                                request: 3,
+                                id: id,
+                                nombre: nombre,
+                                telefono: telefono,
+                                email: email,
+                                direccion: direccion
+                            })
+                            .then(function(response) {
+                                app.obtenerUsuarios();
+                                app.nombre = '';
+                                app.telefono = '';
+                                app.email = '';
+                                app.direccion = '';
+
+                                alert(response.data);
+                            })
+                            .catch(function(error) {
+                                console.log(error);
+                            });
+                    } else {
+                        alert('Diligencie todos los campos');
+                    }
+                },
+
+                deleteUsuario: function(index, id) {
+                    axios.post('/crud.php', {
+                            request: 4,
+                            id: id
+                        })
+                        .then(function(response) {
+                            app.usuarios.splice(index, 1);
+                            alert(response.data);
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                }
+            },
+
+            created: function() {
+                this.obtenerUsuarios();
+            }
+        })
+    </script>
+</body>
+
+</html>

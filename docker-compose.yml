@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  mysql:
+    image: andresvergara0/mysql:5.7
+    container_name: docker-mysql
+    environment:
+       #MYSQL_DATABASE: db_crud_3_capas
+       #MYSQL_USER: root
+       #MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+    restart: always
+    
+  web:
+    image: edgar180251/php:7.3-apache2
+    container_name: docker-php
+    ports:
+      - "80:80"
+    volumes:
+      - ./www:/var/www/html
+    links:
+      - mysql
